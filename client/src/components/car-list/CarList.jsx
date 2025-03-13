@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import carService from "../../services/carService";
-import { Link } from "react-router";
+import CarListItem from "./CarListItem";
 
 export default function CarList() {
     const [cars, setCars] = useState([]);
@@ -16,29 +16,10 @@ export default function CarList() {
         <div className="container mt-5">
             <h2 className="text-center mb-4">🚘 Car Catalog</h2>
             <div className="row">
-                {cars.map(car => (
-                    <div className="col-md-5 mb-4" key={car._id}>
-                        <div className="card h-100 border border-dark shadow-sm rounded-0">
-                            {car.imageUrl && (
-                                <img
-                                    src={car.imageUrl}
-                                    className="card-img-top rounded-0"
-                                    alt={`${car.brand} ${car.model}`}
-                                    style={{ height: '180px', objectFit: 'cover' }}
-                                />
-                            )}
-                            <div className="card-body">
-                                <h5 className="card-title text-center mb-2">{car.brand} {car.model}</h5>
-                                <p className="card-text border-bottom pb-1 mb-3">Year: {car.year}</p>
-                                <p className="card-text border-bottom pb-1 mb-3">Price: ${Number(car.price).toLocaleString()}</p>
-
-                                <div className="text-center mt-3">
-                                <Link to={`/cars/${car._id}/details`} className="btn btn-dark btn-sm px-4">View Details</Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                {cars.length > 0 
+                    ? cars.map(car => <CarListItem key={car._id} {...car} />)
+                    : <h3 className="no-cars">No cars yet</h3>
+                }
             </div>
         </div>
     )

@@ -10,6 +10,7 @@ import Header from './components/header/Header';
 import './App.css';
 import Footer from './components/footer/Footer';
 import Profile from './components/auth/Profile';
+import CarDetails from './components/car-details/carDetails';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/cars' element={<CarList />} />
         <Route path='/cars/create' element={<CarCreate />} />
+        <Route path='/cars/:carId/details' element={<CarDetails />} />
         <Route path='/auth/profile' element={<Profile />} />
         <Route path='/auth/register' element={<Register />} />
         <Route path='/auth/login' element={<Login />} />
