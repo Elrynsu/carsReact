@@ -14,8 +14,9 @@ import Profile from './components/auth/Profile';
 function App() {
 
   return (
-    <div className='app-container'>
+    <>
     <Header />
+    <div  className="container page-overlay my-5">
 
     <Routes>
         <Route path='/' element={<Home />} />
@@ -26,8 +27,9 @@ function App() {
         <Route path='/auth/login' element={<Login />} />
     </Routes>
 
-    <Footer />
     </div>
+    <Footer />
+    </>
   )
 }
 

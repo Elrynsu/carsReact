@@ -7,3 +7,28 @@
     bottom: 0;
     width: 100%;
   }
+
+  body {
+    background-image: url('/images/backgroundCar.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+  }
+  
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main {
+    flex: 1;
+  }
+
+  .page-overlay {
+    background-color: rgba(163, 157, 157, 0.718);
+    backdrop-filter: blur(2px);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
