@@ -33,7 +33,7 @@ export default function CarList() {
                                 <p className="card-text border-bottom pb-1 mb-3">Price: ${Number(car.price).toLocaleString()}</p>
 
                                 <div className="text-center mt-3">
-                                    <Link to={`/cars/${car._id}/details`} className="btn btn-outline-dark btn-sm">View Details</Link>
+                                <Link to={`/cars/${car._id}/details`} className="btn btn-dark btn-sm px-4">View Details</Link>
                                 </div>
                             </div>
                         </div>
