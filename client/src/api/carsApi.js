@@ -5,6 +5,7 @@ import useAuth from "../hooks/useAuth";
 
 
 const baseUrl = 'http://localhost:3030/data/cars';
+const likesUrl = 'http://localhost:3030/data/likes';
 
 export const useCars = () => {
     const [cars, setCars] = useState([]);
@@ -70,11 +71,16 @@ export const useDeleteCar = () => {
 export const useLikeCar = () => {
     const { request } = useAuth();
 
-    const likeCar = (carId, carData) => {
-        return request.post(`${baseUrl}/${carId}`, {...carData});
+    const likeCar = async (carId, userId) => {
+        return request.post(`${likesUrl}`, { carId, userId });
     };
 
-    return {
-        likeCar,
-    }
+    const getCarLikes = async (carId) => {
+        const encodedQuery = encodeURIComponent(`carId="${carId}"`);
+        const result = await request.get(`${likesUrl}?where=${encodedQuery}`);
+
+        return Array.isArray(result) ? result : []; 
+    };
+
+    return { likeCar, getCarLikes };
 };
