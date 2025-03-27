@@ -66,3 +66,15 @@ export const useDeleteCar = () => {
         deleteCar,
     }
 };
+
+export const useLikeCar = () => {
+    const { request } = useAuth();
+
+    const likeCar = (carId, carData) => {
+        return request.post(`${baseUrl}/${carId}`, {...carData});
+    };
+
+    return {
+        likeCar,
+    }
+};
