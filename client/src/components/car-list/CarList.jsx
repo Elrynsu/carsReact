@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
-import carService from "../../services/carService";
 import CarListItem from "./CarListItem";
+import { useCars } from "../../api/carsApi";
 
 export default function CarList() {
-    const [cars, setCars] = useState([]);
-
-    useEffect(() => {
-        carService.getAll()
-            .then(data => setCars(data))
-            .catch(err => console.error('Failed to fetch cars:', err));
-    }, []);
-
+    
+    const { cars } = useCars()
 
     return (
         <div className="container mt-5">

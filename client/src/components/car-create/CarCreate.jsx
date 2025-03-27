@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router';
-import carService from '../../services/carService';
+import { useCreateCar } from '../../api/carsApi';
 
 export default function CarCreate() {
     const navigate = useNavigate();
+    const { create: createCar } = useCreateCar();
 
     const submitAction = async (FormData) => {
         const carData = Object.fromEntries(FormData);
-        await carService.create(carData);
+        
+        await createCar(carData);
         navigate('/cars');
     }
 
