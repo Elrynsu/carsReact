@@ -1,6 +1,29 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { useRegister } from '../../api/authApi';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
 
 export default function Register() {
+    const navigate = useNavigate();
+    const { register } = useRegister();
+    const { userLoginHandler } = useContext(UserContext);
+
+    const registerHandler = async (FormData) => {
+        const { email, password, confirmPassword } = Object.fromEntries(FormData);
+
+        if(password !== confirmPassword) {
+            console.log('Password missmatch');
+
+            return;
+        }
+
+        const authData = await register(email, password)
+
+        userLoginHandler(authData);
+        navigate('/');
+    }
+
+
     return (
         <div className="container my-5 d-flex justify-content-center">
             <div className="card shadow-sm rounded-0 border-dark" style={{ width: '100%', maxWidth: '500px' }}>
@@ -9,7 +32,7 @@ export default function Register() {
                 </div>
 
                 <div className="card-body">
-                    <form>
+                    <form action={registerHandler}>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email</label>
                             <input type="email" className="form-control" id="email" name="email" placeholder="Your email..." required />
