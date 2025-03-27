@@ -17,14 +17,19 @@ import CarDetails from './components/car-details/carDetails';
 import './App.css';
 
 function App() {
-    const [authData, setAuthData] = useState({});
+    const [authData, setAuthData] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : {_id: '', email: '', username: '', accessToken: ''};
+    });
 
-    const userLoginHandler = (resultData) => {
-        setAuthData(resultData);
+    const userLoginHandler = (userData) => {
+        setAuthData(userData);
+        localStorage.setItem('user', JSON.stringify(userData))
     }
 
-    const userLogoutHandler = (resultData) => {
-        setAuthData({});
+    const userLogoutHandler = () => {
+        setAuthData({_id: '', email: '', username: '', accessToken: ''});
+        localStorage.removeItem('user');
     }
 
   return (

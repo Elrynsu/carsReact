@@ -68,7 +68,7 @@ export default function CarDetails() {
                         )}
 
                         {/* Show Kudos button only for non-owners */}
-                        {!isOwner && (
+                        {userId && !isOwner && (
                             <button onClick={carKudosClickHandler} className="btn btn-primary mx-2" disabled={hasLiked}>
                                 {hasLiked ? '✅ Kudos Given' : '👏 Give Kudos'}
                             </button>
