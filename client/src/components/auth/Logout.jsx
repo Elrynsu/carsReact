@@ -1,10 +1,13 @@
 import { Navigate } from 'react-router'
 import { useLogout } from '../../api/authApi';
+import { useEffect } from 'react';
 
 export default function Logout() {
-    const { isLoggedOut } = useLogout();
+    const { logout } = useLogout();
 
-  return isLoggedOut
-    ? <Navigate to="/" />
-    : null;
+    useEffect(() => {
+        logout();
+    }, [logout]);
+
+    return <Navigate to="/" replace />;
 }
