@@ -1,21 +1,34 @@
 import { Routes, Route } from 'react-router';
 
+import { UserContext } from './contexts/UserContext';
+import { useState } from 'react';
+
 import CarList from './components/car-list/CarList';
 import Register from './components/auth/Register';
 import CarCreate from './components/car-create/CarCreate';
 import Home from './components/home/Home';
 import Login from './components/auth/Login';
+import Logout from './components/auth/Logout';
 import Header from './components/header/Header';
-
-import './App.css';
 import Footer from './components/footer/Footer';
 import Profile from './components/auth/Profile';
 import CarDetails from './components/car-details/carDetails';
 
+import './App.css';
+
 function App() {
+    const [authData, setAuthData] = useState({});
+
+    const userLoginHandler = (resultData) => {
+        setAuthData(resultData);
+    }
+
+    const userLogoutHandler = (resultData) => {
+        setAuthData({});
+    }
 
   return (
-    <>
+    <UserContext.Provider value={{...authData, userLoginHandler, userLogoutHandler}}>
     <Header />
     <div  className="container page-overlay my-5">
 
@@ -27,11 +40,12 @@ function App() {
         <Route path='/auth/profile' element={<Profile />} />
         <Route path='/auth/register' element={<Register />} />
         <Route path='/auth/login' element={<Login />} />
+        <Route path='/auth/logout' element={<Logout />} />
     </Routes>
 
     </div>
     <Footer />
-    </>
+    </UserContext.Provider>
   )
 }
 
