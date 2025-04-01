@@ -1,27 +1,57 @@
 import { Link, useNavigate } from 'react-router';
 import { useRegister } from '../../api/authApi';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { UserContext } from '../../contexts/UserContext';
+import ErrorNotification from '../common/ErrorNotification';
+import useErrorNotification from '../../hooks/useErrorNotification';
 
 export default function Register() {
     const navigate = useNavigate();
     const { register } = useRegister();
     const { userLoginHandler } = useContext(UserContext);
+    const formRef = useRef(null);
+    const { error, showError, clearError } = useErrorNotification();
 
-    const registerHandler = async (FormData) => {
-        const { email, password, confirmPassword } = Object.fromEntries(FormData);
+    const registerHandler = async (formData) => {
+        clearError();
 
-        if(password !== confirmPassword) {
-            console.log('Password missmatch');
+        const form = formRef.current;
 
+        if (!form.checkValidity()) {
+            const firstInvalidInput = form.querySelector(':invalid');
+            const fieldName = firstInvalidInput.getAttribute('name');
+
+            const friendlyNames = {
+                email: 'Email',
+                password: 'Password',
+                confirmPassword: 'Confirm Password',
+            };
+
+            const firstFieldName = friendlyNames[fieldName] || fieldName;
+            const message = `${firstFieldName}: ${firstInvalidInput.validationMessage}`;
+
+            showError(message);
+            setTimeout(() => clearError(), 3500);
             return;
         }
 
-        const authData = await register(email, password)
+        const { email, password, confirmPassword } = Object.fromEntries(formData);
 
-        userLoginHandler(authData);
-        navigate('/');
-    }
+        if (password !== confirmPassword) {
+            showError('Passwords do not match.');
+            setTimeout(() => clearError(), 3500);
+            return;
+        }
+
+        try {
+            const authData = await register(email, password);
+            userLoginHandler(authData);
+            navigate('/cars');
+        } catch (err) {
+            showError(err.message || 'Registration failed. Please try again.');
+            setTimeout(() => clearError(), 3500);
+        }
+    };
 
 
     return (
@@ -32,7 +62,8 @@ export default function Register() {
                 </div>
 
                 <div className="card-body">
-                    <form action={registerHandler}>
+                    <ErrorNotification message={error} onClose={clearError} />
+                    <form ref={formRef} action={registerHandler} noValidate>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email</label>
                             <input type="email" className="form-control" id="email" name="email" placeholder="Your email..." required />
@@ -40,17 +71,17 @@ export default function Register() {
 
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">Username</label>
-                            <input type="text" className="form-control" id="username" name="username" placeholder="Choose a username..." required />
+                            <input type="text" className="form-control" id="username" name="username" placeholder="Choose a username..."  minLength="3" maxLength="20" required />
                         </div>
 
                         <div className="mb-3">
                             <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="password" name="password" placeholder="Your password..." required />
+                            <input type="password" className="form-control" id="password" name="password" placeholder="Your password..." minLength="5" maxLength="25" required />
                         </div>
 
                         <div className="mb-3">
                             <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-                            <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password..." required />
+                            <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password..." minLength="5" maxLength="25" required />
                         </div>
 
                         <div className="d-grid">
