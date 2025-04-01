@@ -15,11 +15,12 @@ import Profile from './components/auth/Profile';
 import CarDetails from './components/car-details/carDetails';
 
 import './App.css';
+import PrivateRoute from './components/common/PrivateRoute';
 
 function App() {
     const [authData, setAuthData] = useState(() => {
         const storedUser = localStorage.getItem('user');
-        return storedUser ? JSON.parse(storedUser) : {_id: '', email: '', username: '', accessToken: ''};
+        return storedUser ? JSON.parse(storedUser) : { _id: '', email: '', username: '', accessToken: '' };
     });
 
     const userLoginHandler = (userData) => {
@@ -28,30 +29,33 @@ function App() {
     }
 
     const userLogoutHandler = () => {
-        setAuthData({_id: '', email: '', username: '', accessToken: ''});
+        setAuthData({ _id: '', email: '', username: '', accessToken: '' });
         localStorage.removeItem('user');
     }
 
-  return (
-    <UserContext.Provider value={{...authData, userLoginHandler, userLogoutHandler}}>
-    <Header />
-    <div  className="container page-overlay my-5">
+    return (
+        <UserContext.Provider value={{ ...authData, userLoginHandler, userLogoutHandler }}>
+            <Header />
+            <div className="container page-overlay my-5">
 
-    <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/cars' element={<CarList />} />
-        <Route path='/cars/create' element={<CarCreate />} />
-        <Route path='/cars/:carId/details' element={<CarDetails />} />
-        <Route path='/auth/profile' element={<Profile />} />
-        <Route path='/auth/register' element={<Register />} />
-        <Route path='/auth/login' element={<Login />} />
-        <Route path='/auth/logout' element={<Logout />} />
-    </Routes>
+                <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/cars' element={<CarList />} />
+                    <Route path='/auth/register' element={<Register />} />
+                    <Route path='/auth/login' element={<Login />} />
 
-    </div>
-    <Footer />
-    </UserContext.Provider>
-  )
+                    <Route element={<PrivateRoute />}>
+                        <Route path='/cars/create' element={<CarCreate />} />
+                        <Route path='/cars/:carId/details' element={<CarDetails />} />
+                        <Route path='/auth/profile' element={<Profile />} />
+                        <Route path='/auth/logout' element={<Logout />} />
+                    </Route>
+                </Routes>
+
+            </div>
+            <Footer />
+        </UserContext.Provider>
+    )
 }
 
 export default App
