@@ -1,19 +1,51 @@
 import { useNavigate } from 'react-router';
 import { useCreateCar } from '../../api/carsApi';
+import useErrorNotification from '../../hooks/useErrorNotification';
+import ErrorNotification from '../common/ErrorNotification';
+import { useRef } from 'react';
 
 export default function CarCreate() {
     const navigate = useNavigate();
     const { create: createCar } = useCreateCar();
+    const { error, showError, clearError } = useErrorNotification();
+    const formRef = useRef(null);
 
     const submitAction = async (FormData) => {
-        const carData = Object.fromEntries(FormData);
-        
-        await createCar(carData);
-        navigate('/cars');
+        clearError();
+
+        const form = formRef.current;
+
+        if (!form.checkValidity()) {
+            const firstInvalidInput = form.querySelector(':invalid');
+
+            const fieldName = firstInvalidInput.getAttribute('name');
+            const firstFieldName = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+
+            const validationMessage = firstInvalidInput.validationMessage;
+
+            const message = `${firstFieldName}: ${validationMessage}`;
+    
+            showError(message);
+
+            setTimeout(() => clearError(), 3500);
+            return;
+        }
+
+        try{
+            const carData = Object.fromEntries(FormData);
+            
+            await createCar(carData);
+            navigate('/cars');
+        } catch(err) {
+            showError(err.message || 'Failed to create the car. Please try again.');
+            setTimeout(() => clearError(), 2000);
+        }
     }
 
     return (
         <section className="create-car-page container mt-5">
+            <ErrorNotification message={error} onClose={clearError} />
+
             <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6">
                     <div className="card shadow-lg border-0">
@@ -21,15 +53,15 @@ export default function CarCreate() {
                             <h4 className="mb-0">🚗 Create a New Car Listing</h4>
                         </div>
                         <div className="card-body bg-light rounded-bottom">
-                            <form action={submitAction}>
+                        <form ref={formRef} action={submitAction} noValidate>
                                 <div className="mb-3">
                                     <label htmlFor="brand" className="form-label">Brand</label>
-                                    <input type="text" className="form-control" id="brand" name="brand" placeholder="Enter car brand..." required />
+                                    <input type="text" className="form-control" id="brand" name="brand" placeholder="Enter car brand..." minLength="2" maxLength="25" required />
                                 </div>
 
                                 <div className="mb-3">
                                     <label htmlFor="model" className="form-label">Model</label>
-                                    <input type="text" className="form-control" id="model" name="model" placeholder="Enter car model..." required />
+                                    <input type="text" className="form-control" id="model" name="model" placeholder="Enter car model..." minLength="2" maxLength="25" required />
                                 </div>
 
                                 <div className="mb-3">
