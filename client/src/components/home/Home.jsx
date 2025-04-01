@@ -1,6 +1,9 @@
+import { useContext } from "react"
 import { Link } from "react-router"
+import { UserContext } from "../../contexts/UserContext"
 
 export default function Home() {
+
     return (
         
         <div className="container home-overlay text-center py-5 my-5 rounded shadow-lg">
@@ -20,7 +23,7 @@ export default function Home() {
           Don't have an account? <Link className="text-dark fw-bold" to="/auth/register">Register here</Link>
         </p>
         <p>
-          Already registered? <Link className="text-dark fw-bold" to="/profile">Go to My Profile</Link>
+          Already registered? <Link className="text-dark fw-bold" to="auth/profile">Go to My Profile</Link>
         </p>
   
         <hr className="my-5" />
