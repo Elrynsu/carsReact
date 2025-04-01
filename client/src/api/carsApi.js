@@ -84,3 +84,19 @@ export const useLikeCar = () => {
 
     return { likeCar, getCarLikes };
 };
+
+export const useGetUserCars = () => {
+    const { request, _id: userId } = useAuth();
+
+    const getUserCars = async () => {
+        const query = encodeURIComponent(`_ownerId="${userId}"`);
+        const url = `${baseUrl}?where=${query}`;
+
+        return request.get(url);
+    };
+
+    return {
+        getUserCars,
+    }
+
+}
