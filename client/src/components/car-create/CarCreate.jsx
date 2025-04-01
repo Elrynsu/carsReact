@@ -34,7 +34,7 @@ export default function CarCreate() {
 
                                 <div className="mb-3">
                                     <label htmlFor="origin" className="form-label">Country of Origin</label>
-                                    <input type="text" className="form-control" id="origin" name="origin" placeholder="e.g. Germany, Japan, USA" required />
+                                    <input type="text" className="form-control" id="origin" name="origin" placeholder="e.g. Germany, Japan, USA" minLength="2" maxLength="25" required />
                                 </div>
 
                                 <div className="mb-4">
@@ -51,7 +51,7 @@ export default function CarCreate() {
 
                                 <div className="mb-3">
                                     <label htmlFor="year" className="form-label">Year</label>
-                                    <input type="number" className="form-control" id="year" name="year" placeholder="e.g. 2023" min="1890" required />
+                                    <input type="number" className="form-control" id="year" name="year" placeholder="e.g. 2023" min="1890" max="2026" required />
                                 </div>
 
                                 <div className="mb-4">
@@ -61,7 +61,7 @@ export default function CarCreate() {
 
                                 <div className="mb-4">
                                     <label htmlFor="summary" className="form-label">Summary</label>
-                                    <textarea className="form-control" id="summary" name="summary" rows="4" placeholder="Add a brief description about the car..." required></textarea>
+                                    <textarea className="form-control" id="summary" name="summary" rows="4" placeholder="Add a brief description about the car..." minLength="20" maxLength="500" required></textarea>
                                 </div>
 
                                 <div className="d-grid">
