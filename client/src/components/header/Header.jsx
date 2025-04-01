@@ -29,6 +29,9 @@ export default function Header() {
                                     <Link className="nav-link text-white" to="/cars/create">Create</Link>
                                 </li>
                                 <li className="nav-item">
+                                    <Link className="nav-link text-white" to="/auth/profile">Profile</Link>
+                                </li>
+                                <li className="nav-item">
                                     <Link className="nav-link text-white" to="/auth/logout">Logout</Link>
                                 </li>
                             </>

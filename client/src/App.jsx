@@ -12,6 +12,7 @@ import Logout from './components/auth/Logout';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Profile from './components/auth/Profile';
+import CarEdit from './components/car-edit/carEdit';
 import CarDetails from './components/car-details/carDetails';
 
 import './App.css';
@@ -47,6 +48,7 @@ function App() {
                     <Route element={<PrivateRoute />}>
                         <Route path='/cars/create' element={<CarCreate />} />
                         <Route path='/cars/:carId/details' element={<CarDetails />} />
+                        <Route path='/cars/:carId/edit' element={<CarEdit />} />
                         <Route path='/auth/profile' element={<Profile />} />
                         <Route path='/auth/logout' element={<Logout />} />
                     </Route>
